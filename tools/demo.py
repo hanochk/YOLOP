@@ -90,7 +90,7 @@ def detect(cfg,opt):
             img = img.unsqueeze(0)
         # Inference
         t1 = time_synchronized()
-        det_out, da_seg_out,ll_seg_out= model(img)
+        det_out, da_seg_out,ll_seg_out = model(img)
         t2 = time_synchronized()
         # if i == 0:
         #     print(det_out)
@@ -115,7 +115,7 @@ def detect(cfg,opt):
         ratio = shapes[1][0][1]
 
         da_predict = da_seg_out[:, :, pad_h:(height-pad_h),pad_w:(width-pad_w)]
-        da_seg_mask = torch.nn.functional.interpolate(da_predict, scale_factor=int(1/ratio), mode='bilinear')
+        da_seg_mask = torch.nn.functional.interpolate(da_predict, scale_factor=1/ratio, mode='bilinear')
         _, da_seg_mask = torch.max(da_seg_mask, 1)
         da_seg_mask = da_seg_mask.int().squeeze().cpu().numpy()
         # da_seg_mask = morphological_process(da_seg_mask, kernel_size=7)
